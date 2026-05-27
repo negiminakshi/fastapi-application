@@ -1,0 +1,61 @@
+services:
+
+  api:
+    image: minakshi2463/devops-assignment-api:latest
+    container_name: api
+    restart: always
+    networks:
+      - backend
+    env_file:
+      - .env
+    depends_on:
+      - db
+      - redis
+    ports:
+      - "8000:8000"
+    
+
+  db:
+    image: postgres:16
+    container_name: db
+    restart: always
+    environment:
+      POSTGRES_DB: appdb
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: secret
+    networks:
+      - backend
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:7
+    container_name: redis
+    restart: always
+    networks:
+      - backend
+    ports:
+      - "6379:6379"
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    restart: unless-stopped
+    networks:
+      - backend
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+    
+
+
+volumes:
+  postgres_data:
+
+networks:
+  backend:
+    driver: bridge
+
