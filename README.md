@@ -156,6 +156,20 @@ Response (200 when healthy, 503 when degraded):
 http://15.207.110.207/docs **
 
 ---
+## SSL SETUP APPROCH
+
+SSL certificates can be generated and managed using:
+
+Certbot
+Let's Encrypt
+NGINX SSL termination
+
+
+sudo apt install certbot python3-certbot-nginx -y
+sudo certbot --nginx -d example.com
+sudo certbot renew --dry-run
+
+----
 
 ## Logging Strategy
 **View logs:**
