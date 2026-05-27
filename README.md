@@ -268,7 +268,8 @@ docker exec -it api bash
  nginx -t
 
 ---
-## AI / LLM Ready Endpoint
+
+##** AI / LLM Ready Endpoint**
 
 The application includes an AI-ready endpoint:
 
