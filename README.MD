@@ -75,6 +75,7 @@ curl -k https://localhost/health
 ### Step 1 — Initial Server Setup
 
 ```bash
+# Launch ec2
 # SSH in as root (or sudo user)
 clone repo
 
@@ -84,20 +85,52 @@ clone repo
 
 ### Step 2 — Dockerize application
 
-Create Dockerfile
-create docker-compose.yaml
+# Create Dockerfile 
+# Create Docker image (docker build -t fastapi-app .)
+# Create docker-compose.yaml
 -----
 
 
 ### Step 3 — Deploy
 
 ```bash
-docker compose pull
-docker compose up -d
+docker compose up -d --build
 docker compose ps         # all containers should be healthy
 ```
 
-### Step 4 — Configure GitHub Actions Secrets
+### Step 4 - NGINX Reverse Proxy
+
+NGINX is configured as a reverse proxy in front of the FastAPI application.
+
+# sudo /etc/nginx/sites-enabled/nginx-conf
+# sudo nginx -t          # test config
+# sudo systemctl reload nginx
+
+## Responsibilities handled by NGINX:
+
+# Reverse proxy routing
+# HTTP request forwarding
+# Future SSL termination support
+
+## Health Check
+----
+```
+GET /health
+```
+
+Response (200 when healthy, 503 when degraded):
+```json
+{
+  "status": "ok",
+  "timestamp": "2025-05-27T10:00:00",
+  "database": "ok",
+  "redis": "ok"
+}
+** check http://15.207.100.93
+http://15.207.100.93/docs **
+
+---
+### Step 5 — Configure GitHub Actions Secrets
 
 In your GitHub repository → Settings → Secrets → Actions:
 
@@ -126,48 +159,6 @@ push to main
  [deploy]   
 ---
 
-## NGINX Reverse Proxy
-
-NGINX is configured as a reverse proxy in front of the FastAPI application.
-
-sudo /etc/nginx/sites-enabled/nginx-conf
-sudo nginx -t          # test config
-sudo systemctl reload nginx
-
-Responsibilities handled by NGINX:
-
-Reverse proxy routing
-HTTP request forwarding
-Future SSL termination support
-Load balancing readiness
-Centralized traffic management
-
-** Example request flow: **
-
-Client Request
-      ↓
-NGINX Reverse Proxy
-      ↓
-FastAPI Application
-
-## Health Check
-----
-```
-GET /health
-```
-
-Response (200 when healthy, 503 when degraded):
-```json
-{
-  "status": "ok",
-  "timestamp": "2025-05-27T10:00:00",
-  "database": "ok",
-  "redis": "ok"
-}
-** check http://15.207.100.93
-http://15.207.100.93/docs **
-
----
 ## SSL SETUP APPROCH
 
 SSL certificates can be generated and managed using:
@@ -293,26 +284,22 @@ docker exec -it api bash
 
 ---
 
-## AI / LLM Ready Endpoint
+### AI / LLM Ready Endpoint
 
-The application includes an AI-ready endpoint:
+# The application includes an AI-ready endpoint:
 
 /ai
 
 This endpoint is designed for future integration with:
-
-OpenAI APIs
-HuggingFace models
-LLM inference services
  * check http://15.207.100.93:8000/ai *
 
-Verify all endpoints
+### Verify all endpoints
 Endpoint                         Description            
-http://15.207.100.93              root 
-http://15.207.100.93//health      Health check (DB + Redis status)
-http://15.207.100.93//docs        Swagger UI 
-http://15.207.100.93/metrics      Prometheus metrics 
-http://15.207.100.93:9090        Prometheus dashboard
+# http://15.207.100.93              root 
+# http://15.207.100.93//health      Health check (DB + Redis status)
+# http://15.207.100.93//docs        Swagger UI 
+# http://15.207.100.93/metrics      Prometheus metrics 
+# http://15.207.100.93:9090        Prometheus dashboard
 
 
 
