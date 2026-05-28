@@ -130,6 +130,10 @@ push to main
 
 NGINX is configured as a reverse proxy in front of the FastAPI application.
 
+sudo /etc/nginx/sites-enabled/nginx-conf
+sudo nginx -t          # test config
+sudo systemctl reload nginx
+
 Responsibilities handled by NGINX:
 
 Reverse proxy routing
@@ -138,7 +142,7 @@ Future SSL termination support
 Load balancing readiness
 Centralized traffic management
 
-Example request flow:
+** Example request flow: **
 
 Client Request
       ↓
@@ -147,7 +151,7 @@ NGINX Reverse Proxy
 FastAPI Application
 
 ## Health Check
-
+----
 ```
 GET /health
 ```
@@ -208,11 +212,24 @@ cron jobs
 PostgreSQL pg_dump
 
 Backups are timestamped and stored locally.
+chmod +x scripts/backup.sh
+mkdir -p ~/backups
+
+# Add to crontab — runs daily at 2am
+crontab -e
+# add: 0 2 * * * /home/ubuntu/devops-assignment/scripts/backup.sh
 
 Future improvements:
 
 S3 backup storage
 Backup retention policies
+---
+## FIREWALL
+---
+sudo ufw allow 22
+sudo ufw allow 80
+sudo ufw allow 443
+sudo ufw enable
 ---
 
 ## Security Measures
@@ -229,14 +246,6 @@ Backup retention policies
 | NGINX | Rate limiting (30 req/min per IP, burst 10) |
 | App | Environment variables for all secrets (never hard-coded) |
 | App | `.env` in `.gitignore` |
-
-A production SSL setup can be configured using:
-
-NGINX
-Let's Encrypt
-Certbot
-
-* Since no production domain is configured, HTTPS setup is documented but not enabled. *
 
 ---
 
@@ -259,6 +268,13 @@ DDoS protection
 This gives you free CDN, DDoS mitigation, and WAF in front of NGINX.
 
 ---
+## Zero-Downtime Deployment Strategy
+
+New containers are started alongside the old ones.
+NGINX continues serving traffic to the old container.
+Once the new container passes the /health check, NGINX reloads (graceful — no dropped connections).
+Old container is removed only after the new one is confirmed healthy.
+Result: zero dropped requests during deployment
 
 ## Troubleshooting
 
@@ -289,3 +305,14 @@ OpenAI APIs
 HuggingFace models
 LLM inference services
  * check http://15.207.100.93:8000/ai *
+
+Verify all endpoints
+Endpoint                 Description            
+http://your-ip/API         root
+http://your-ip/health      Health check (DB + Redis status)
+http://your-ip/docs        Swagger UI 
+http://your-ip/metrics     Prometheus metrics 
+http://your-ip:9090        Prometheus dashboard
+
+
+
