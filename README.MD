@@ -95,10 +95,10 @@ clone repo
 ### Step 3 — Deploy
 
 ```bash
-docker compose up -d --build
-docker compose ps         # all containers should be healthy
+# docker compose up -d --build
+# docker compose ps         # all containers should be healthy
 ```
-
+---
 ### Step 4 - NGINX Reverse Proxy
 ```bash
 NGINX is configured as a reverse proxy in front of the FastAPI application.
@@ -116,8 +116,8 @@ NGINX is configured as a reverse proxy in front of the FastAPI application.
 ## Health Check
 ----
 ```
+```bash
 GET /health
-```
 
 Response (200 when healthy, 503 when degraded):
 ```json
@@ -128,7 +128,7 @@ Response (200 when healthy, 503 when degraded):
   "redis": "ok"
 }
 check http://15.207.100.93
-
+'''
 ---
 ### Step 5 — Configure GitHub Actions Secrets
 
@@ -145,7 +145,7 @@ After this, every push to `main` triggers: test → build → push to dockerhub 
 ---
 
 ## CI/CD Pipeline
-
+---
 ```
 push to main
      │
@@ -156,7 +156,8 @@ push to main
  [build]  
      │
      ▼
- [deploy]   
+ [deploy]
+'''
 ---
 
 ## SSL SETUP APPROCH
