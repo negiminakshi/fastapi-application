@@ -19,10 +19,8 @@ services:
     image: postgres:16
     container_name: db
     restart: always
-    environment:
-      POSTGRES_DB: appdb
-      POSTGRES_USER: app
-      POSTGRES_PASSWORD: secret
+    env_file:
+      - .env
     networks:
       - backend
     volumes:
