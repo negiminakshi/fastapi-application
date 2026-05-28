@@ -24,6 +24,9 @@ jobs:
           pip install pytest
 
       - name: Run Tests
+        env:
+          DATABASE_URL: sqlite+aiosqlite:///./test.db
+          REDIS_URL: redis://localhost:6379/0
         run: |
           pytest app/tests/
 
