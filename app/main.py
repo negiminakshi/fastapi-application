@@ -14,6 +14,7 @@ from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker, DeclarativeBase
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, text, select
 from pydantic import BaseModel, Field
+from dotenv import load_dotenv
 
 # ── Structured JSON logging ───────────────────────────────────────────────────
 class JSONFormatter(logging.Formatter):
@@ -31,7 +32,11 @@ logging.basicConfig(level=logging.INFO, handlers=[handler])
 logger = logging.getLogger(__name__)
 
 # ── Config ────────────────────────────────────────────────────────────────────
+load_dotenv() 
 DATABASE_URL = os.getenv("DATABASE_URL")
+if not DATABASE_URL:
+    raise RuntimeError("DATABASE_URL missing. Check .env or CI config.")
+
 REDIS_URL     = os.getenv("REDIS_URL",     "redis://redis:6379/0")
 APP_ENV       = os.getenv("APP_ENV",       "production")
 
