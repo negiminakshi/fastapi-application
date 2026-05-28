@@ -46,11 +46,11 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          docker build -t minakshi2463/devops-assignment-api:latest ./app
+          docker build -t minakshi2463/fastapi-app:latest ./app
 
       - name: Push Docker Image
         run: |
-          docker push minakshi2463/devops-assignment-api:latest
+          docker push minakshi2463/fastapi-app:latest
 
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
@@ -61,4 +61,4 @@ jobs:
           script: |
             cd devops-assignment
             docker compose pull
-            docker compose up -d 
+            docker compose up -d  
