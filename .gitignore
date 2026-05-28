@@ -1,6 +1,5 @@
 .env
 .git
-.env.example
 ..
 .
 __pycache__/
