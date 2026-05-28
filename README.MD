@@ -88,8 +88,8 @@ clone repo
 # Create Dockerfile 
 # Create Docker image (docker build -t fastapi-app .)
 # Create docker-compose.yaml
-'''
------
+```
+
 
 
 ### Step 3 — Deploy
@@ -98,7 +98,7 @@ clone repo
 # docker compose up -d --build
 # docker compose ps         # all containers should be healthy
 ```
----
+
 ### Step 4 - NGINX Reverse Proxy
 ```bash
 NGINX is configured as a reverse proxy in front of the FastAPI application.
@@ -112,15 +112,14 @@ NGINX is configured as a reverse proxy in front of the FastAPI application.
 # Reverse proxy routing
 # HTTP request forwarding
 # Future SSL termination support
-'''
+```
 ## Health Check
 ----
-```
 ```bash
 GET /health
 
 Response (200 when healthy, 503 when degraded):
-```json
+json
 {
   "status": "ok",
   "timestamp": "2025-05-27T10:00:00",
@@ -128,7 +127,7 @@ Response (200 when healthy, 503 when degraded):
   "redis": "ok"
 }
 check http://15.207.100.93
-'''
+```
 ---
 ### Step 5 — Configure GitHub Actions Secrets
 
@@ -146,7 +145,7 @@ After this, every push to `main` triggers: test → build → push to dockerhub 
 
 ## CI/CD Pipeline
 ---
-```
+```bash
 push to main
      │
      ▼
@@ -157,7 +156,7 @@ push to main
      │
      ▼
  [deploy]
-'''
+```
 ---
 
 ## SSL SETUP APPROCH
