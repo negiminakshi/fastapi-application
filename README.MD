@@ -160,18 +160,18 @@ push to main
 ---
 
 ## SSL SETUP APPROCH
-
+```bash
 SSL certificates can be generated and managed using:
 
-Certbot
-Let's Encrypt
-NGINX SSL termination
+# Certbot
+# Let's Encrypt
+# NGINX SSL termination
 
 
-sudo apt install certbot python3-certbot-nginx -y
-sudo certbot --nginx -d example.com
-sudo certbot renew --dry-run
-
+# sudo apt install certbot python3-certbot-nginx -y
+# sudo certbot --nginx -d example.com
+# sudo certbot renew --dry-run
+```
 ----
 
 ## Logging Strategy
@@ -183,7 +183,7 @@ docker exec -it <db_ctr> psql … # Postgres query logs
 ```
 
 ## Monitoring Strategy
-
+``` bash
 Prometheus is configured to scrape FastAPI metrics every 15 seconds.
 http://15.207.100.93:9090
 
@@ -194,9 +194,9 @@ Request latency
 Container uptime
 Health monitoring
 ---
-
+```
 ## Backup & Restore
-
+```bash
 Database backups are automated using:
 
 cron jobs
@@ -207,24 +207,21 @@ chmod +x scripts/backup.sh
 mkdir -p ~/backups
 
 # Add to crontab — runs daily at 2am
-crontab -e
-# add: 0 2 * * * /home/ubuntu/devops-assignment/scripts/backup.sh
-
-Future improvements:
-
-S3 backup storage
-Backup retention policies
+# [crontab -e ]
+# 0 2 * * * /home/ubuntu/devops-assignment/scripts/backup.sh
+```
 ---
 ## FIREWALL
+``` bash
 ---
 sudo ufw allow 22
 sudo ufw allow 80
 sudo ufw allow 443
 sudo ufw enable
 ---
-
+```
 ## Security Measures
-
+```bash
 | Layer | Measure |
 |-------|---------|
 | OS | UFW — only 22/80/443 open |
@@ -237,11 +234,11 @@ sudo ufw enable
 | NGINX | Rate limiting (30 req/min per IP, burst 10) |
 | App | Environment variables for all secrets (never hard-coded) |
 | App | `.env` in `.gitignore` |
-
+```
 ---
 
 ## Cloudflare Integration (FUTURE DEVELOPMENT)
-
+``` bash
 1. Point your domain's nameservers to Cloudflare.
 2. Add an A record pointing to your VPS IP, with **Proxy enabled** (orange cloud).
 3. In Cloudflare → SSL/TLS: set mode to **Full (strict)**.
@@ -257,16 +254,16 @@ DDoS protection
 * A production domain is required for integration. *
 
 This gives you free CDN, DDoS mitigation, and WAF in front of NGINX.
-
+```
 ---
 ## Zero-Downtime Deployment Strategy
-
+```bash
 New containers are started alongside the old ones.
 NGINX continues serving traffic to the old container.
 Once the new container passes the /health check, NGINX reloads (graceful — no dropped connections).
 Old container is removed only after the new one is confirmed healthy.
 Result: zero dropped requests during deployment
-
+```
 ## Troubleshooting
 
 ```bash
@@ -281,18 +278,18 @@ docker exec -it api bash
 
 # Validate NGINX config
  nginx -t
-
+```
 ---
 
 ### AI / LLM Ready Endpoint
-
+```bash
 # The application includes an AI-ready endpoint:
 
 /ai
 
 This endpoint is designed for future integration with:
  * check http://15.207.100.93:8000/ai *
-
+```
 ### Verify all endpoints
 Endpoint                         Description            
 # http://15.207.100.93              root 
