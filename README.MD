@@ -307,12 +307,12 @@ LLM inference services
  * check http://15.207.100.93:8000/ai *
 
 Verify all endpoints
-Endpoint                 Description            
-http://your-ip/API         root
-http://your-ip/health      Health check (DB + Redis status)
-http://your-ip/docs        Swagger UI 
-http://your-ip/metrics     Prometheus metrics 
-http://your-ip:9090        Prometheus dashboard
+Endpoint                         Description            
+http://15.207.100.93              root 
+http://15.207.100.93//health      Health check (DB + Redis status)
+http://15.207.100.93//docs        Swagger UI 
+http://15.207.100.93/metrics      Prometheus metrics 
+http://15.207.100.93:9090        Prometheus dashboard
 
 
 
